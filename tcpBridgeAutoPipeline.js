@@ -8,6 +8,7 @@ var httpServer = http.createServer(expressApp);
 
 expressApp.get('/', function (req, res) {
     var date = new Date();
+    var currentPort = 8081;
 
     res.writeHead(200, {
         'Date': date.toUTCString(),
@@ -28,7 +29,7 @@ expressApp.get('/', function (req, res) {
 
     tcpServer.maxConnections = 1;
 
-    tcpServer.listen(8081, function () {
+    tcpServer.listen(currentPort, function () {
         var cmd = 'gst-launch-1.0';
         var args =
             ['videotestsrc',
@@ -43,6 +44,7 @@ expressApp.get('/', function (req, res) {
                 'port=' + tcpServer.address().port];
 
         var gstMuxer = child.spawn(cmd, args);
+        currentPort = currentPort + 1;
 
         gstMuxer.stderr.on('data', onSpawnError);
         gstMuxer.on('exit', onSpawnExit);
