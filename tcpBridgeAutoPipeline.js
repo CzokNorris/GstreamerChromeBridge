@@ -19,6 +19,7 @@ expressApp.get('/', function (req, res) {
     });
 
     var tcpServer = net.createServer(function (socket) {
+        currentPort = currentPort + 1;
         socket.on('data', function (data) {
             res.write(data);
         });
@@ -44,7 +45,6 @@ expressApp.get('/', function (req, res) {
                 'port=' + tcpServer.address().port];
 
         var gstMuxer = child.spawn(cmd, args);
-        currentPort = currentPort + 1;
 
         gstMuxer.stderr.on('data', onSpawnError);
         gstMuxer.on('exit', onSpawnExit);
