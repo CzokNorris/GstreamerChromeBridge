@@ -9,6 +9,7 @@ var httpServer = http.createServer(expressApp);
 expressApp.get('/', function (req, res) {
     var date = new Date();
     var currentPort = 8081;
+    console.log('Starting');
 
     res.writeHead(200, {
         'Date': date.toUTCString(),
@@ -20,10 +21,13 @@ expressApp.get('/', function (req, res) {
 
     var tcpServer = net.createServer(function (socket) {
         currentPort = currentPort + 1;
+        console.log('tcp server');
         socket.on('data', function (data) {
+            console.log('tcp data');
             res.write(data);
         });
         socket.on('close', function (had_error) {
+            console.log('tcp close');
             res.end();
         });
     });
@@ -31,6 +35,7 @@ expressApp.get('/', function (req, res) {
     tcpServer.maxConnections = 1;
 
     tcpServer.listen(currentPort, function () {
+        console.log('tcp listen');
         var cmd = 'gst-launch-1.0';
         var args =
             ['videotestsrc',
@@ -57,6 +62,7 @@ expressApp.get('/', function (req, res) {
 });
 
 httpServer.listen(8080);
+console.log('http listen');
 
 function onSpawnError(data) {
     console.log(data.toString());
