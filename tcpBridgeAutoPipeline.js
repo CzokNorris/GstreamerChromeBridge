@@ -5,11 +5,12 @@ var child = require('child_process');
 
 var expressApp = express();
 var httpServer = http.createServer(expressApp);
+var currentPort = 8081;
 
 expressApp.get('/', function (req, res) {
     var date = new Date();
-    var currentPort = 8081;
     console.log('Starting');
+    currentPort = currentPort + 1;
 
     res.writeHead(200, {
         'Date': date.toUTCString(),
@@ -20,7 +21,6 @@ expressApp.get('/', function (req, res) {
     });
 
     var tcpServer = net.createServer(function (socket) {
-        currentPort = currentPort + 1;
         console.log('tcp server');
         socket.on('data', function (data) {
             console.log('tcp data');
