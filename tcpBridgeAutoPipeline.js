@@ -38,7 +38,8 @@ expressApp.get('/', function (req, res) {
         console.log('tcp listen');
         var cmd = 'gst-launch-1.0';
         var args =
-            ['autovideosrc device=/dev/video0',
+            ['autovideosrc',
+                'device=/dev/video0',
                 '!', 'video/x-raw,framerate=30/1,width=320,height=240',
                 '!', 'videoconvert',
                 '!', 'queue',
